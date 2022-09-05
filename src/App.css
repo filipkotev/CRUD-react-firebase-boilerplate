@@ -1,0 +1,27 @@
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+.centered {
+  margin: 8px auto;
+}
+
+.todo {
+  display: flex;
+  min-width: 200px;
+  max-width: 50vw;
+}
+
+input[type="checkbox"] {
+  display: none;
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}
+
+form input:first-child {
+  margin-right: 16px;
+}

@@ -1,7 +1,8 @@
 import {  getDocs,
           addDoc,
           deleteDoc,
-          doc
+          doc,
+          onSnapshot
         } from "firebase/firestore";
 import { useEffect,useState } from "react";
 
@@ -33,6 +34,15 @@ function App() {
   }, []);
 
   /**
+   * Real time listener to get a real time data / SUBSCRIPTION TO A DB /
+   */
+  useEffect(() => {
+    onSnapshot(todosCollectionRef, (snapshot) => {
+      setTodos(snapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
+    })
+  }, [])
+
+  /**
    * Add new todo
    */
   const addTodo = (e) => {
@@ -53,13 +63,12 @@ function App() {
    */
   const deleteTodo = (e) => {
     const todoId = e.target.previousSibling.querySelector('input').id;
-  
-    // first we have to store id of the document we want to delete
+    // First we have to store id of the document we want to delete
     const docRef = doc(db, 'todos', todoId)
 
     // Delete that document
     deleteDoc(docRef)
-      .then(() => console.log('Todo deleted'))
+      .then(() => alert('Todo deleted'))
       .catch(err => console.log(err));
     
   }

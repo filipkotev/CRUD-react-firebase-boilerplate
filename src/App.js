@@ -1,7 +1,11 @@
-import { getDocs } from "firebase/firestore";
+import {  getDocs,
+          addDoc,
+          deleteDoc,
+          doc
+        } from "firebase/firestore";
 import { useEffect,useState } from "react";
 
-import { todosCollectionRef } from './firebase'
+import { db, todosCollectionRef } from './firebase'
 
 import './App.css';
 
@@ -28,20 +32,55 @@ function App() {
     getTodos();
   }, []);
 
+  /**
+   * Add new todo
+   */
+  const addTodo = (e) => {
+    e.preventDefault();
+    const form = e.target
+
+    //We have to pass collection reference and a todo matching the db format we have set in firebase
+    addDoc(todosCollectionRef, {
+      todo: form.text.value
+    })
+    .then(() => form.reset())
+    .catch(err => console.log(err));
+
+  }
+
+  /**
+   * Delete todo
+   */
+  const deleteTodo = (e) => {
+    const todoId = e.target.previousSibling.querySelector('input').id;
+  
+    // first we have to store id of the document we want to delete
+    const docRef = doc(db, 'todos', todoId)
+
+    // Delete that document
+    deleteDoc(docRef)
+      .then(() => console.log('Todo deleted'))
+      .catch(err => console.log(err));
+    
+  }
+
   return (
     <div className="app">
       {todos.map(({ todo, id }) => (
         <span className="todo centered" key={id}>
-          <input type="checkbox" id={id} />
-          <label htmlFor={id}>{todo}</label>
+          <span>
+            <input type="checkbox" id={id} />
+            <label htmlFor={id}>{todo}</label>
+          </span>
+          <button className="todo-delete" onClick={deleteTodo} >Delete</button>
         </span>
       ))}
 
       <div className="centered">
         <h3>Add another todo</h3>
-        <form>
-          <input type="text" />
-          <input type="submit" />
+        <form onSubmit={addTodo}>
+          <input type="text" name="text" required/>
+          <input type="submit"/>
         </form>
       </div>
     </div>

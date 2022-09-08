@@ -15,4 +15,4 @@ const todosCollectionRef = collection(db, 'todos');
 // get collection data
 
 
-export { todosCollectionRef };
+export { db, todosCollectionRef };

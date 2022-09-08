@@ -2,7 +2,10 @@ import {  getDocs,
           addDoc,
           deleteDoc,
           doc,
-          onSnapshot
+          onSnapshot,
+          query,
+          serverTimestamp,
+          orderBy
         } from "firebase/firestore";
 import { useEffect,useState } from "react";
 
@@ -12,6 +15,12 @@ import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
+
+  /**
+   * Firebase Queries
+   */
+  // orderBy has 'asc' by default, therefore we can skip passing it as argument
+  const q = query(todosCollectionRef, orderBy('createdAt', 'asc'));
 
   /**
    * Fetch all todos in initial load of the app
@@ -37,7 +46,7 @@ function App() {
    * Real time listener to get a real time data / SUBSCRIPTION TO A DB /
    */
   useEffect(() => {
-    onSnapshot(todosCollectionRef, (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       setTodos(snapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
     })
   }, [])
@@ -51,7 +60,8 @@ function App() {
 
     //We have to pass collection reference and a todo matching the db format we have set in firebase
     addDoc(todosCollectionRef, {
-      todo: form.text.value
+      todo: form.text.value,
+      createdAt: serverTimestamp()
     })
     .then(() => form.reset())
     .catch(err => console.log(err));

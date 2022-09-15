@@ -1,0 +1,15 @@
+.todo {
+  display: flex;
+  justify-content: space-between;
+  min-width: 250px;
+  max-width: 50vw;
+}
+
+input[type="checkbox"] {
+  display: none;
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}

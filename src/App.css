@@ -6,23 +6,3 @@
 .centered {
   margin: 8px auto;
 }
-
-.todo {
-  display: flex;
-  justify-content: space-between;
-  min-width: 250px;
-  max-width: 50vw;
-}
-
-input[type="checkbox"] {
-  display: none;
-  opacity: 0;
-}
-
-input[type="checkbox"]:checked + label {
-  text-decoration: line-through;
-}
-
-form input:first-child {
-  margin-right: 16px;
-}

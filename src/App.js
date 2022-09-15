@@ -1,17 +1,16 @@
 import {  getDocs,
-          addDoc,
-          deleteDoc,
-          doc,
           onSnapshot,
           query,
-          serverTimestamp,
           orderBy
         } from "firebase/firestore";
 import { useEffect,useState } from "react";
+import { Routes } from "react-router-dom";
 
 import { db, todosCollectionRef } from './firebase'
 
+import Todo from './components/todo/Todo'
 import './App.css';
+import AddTodo from "./components/todo-add/AddTodo";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -51,57 +50,16 @@ function App() {
     })
   }, [])
 
-  /**
-   * Add new todo
-   */
-  const addTodo = (e) => {
-    e.preventDefault();
-    const form = e.target
-
-    //We have to pass collection reference and a todo matching the db format we have set in firebase
-    addDoc(todosCollectionRef, {
-      todo: form.text.value,
-      createdAt: serverTimestamp()
-    })
-    .then(() => form.reset())
-    .catch(err => console.log(err));
-
-  }
-
-  /**
-   * Delete todo
-   */
-  const deleteTodo = (e) => {
-    const todoId = e.target.previousSibling.querySelector('input').id;
-    // First we have to store id of the document we want to delete
-    const docRef = doc(db, 'todos', todoId)
-
-    // Delete that document
-    deleteDoc(docRef)
-      .then(() => alert('Todo deleted'))
-      .catch(err => console.log(err));
-    
-  }
-
   return (
     <div className="app">
-      {todos.map(({ todo, id }) => (
-        <span className="todo centered" key={id}>
-          <span>
-            <input type="checkbox" id={id} />
-            <label htmlFor={id}>{todo}</label>
-          </span>
-          <button className="todo-delete" onClick={deleteTodo} >Delete</button>
-        </span>
-      ))}
 
-      <div className="centered">
-        <h3>Add another todo</h3>
-        <form onSubmit={addTodo}>
-          <input type="text" name="text" required/>
-          <input type="submit"/>
-        </form>
-      </div>
+      {/* <Routes> */}
+        {todos.map(({ todo, id }) => (
+          <Todo todo={todo} id={id} />
+        ))}
+
+        <AddTodo />
+      {/* </Routes> */}
     </div>
   );
 }

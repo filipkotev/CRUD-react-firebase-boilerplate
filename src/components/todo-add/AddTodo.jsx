@@ -18,7 +18,7 @@ function AddTodo() {
       createdAt: serverTimestamp()
     })
     .then(() => form.reset())
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 
   }
 

@@ -5,6 +5,11 @@
   max-width: 50vw;
 }
 
+.todo > span {
+  display: flex;
+  align-items: center;
+}
+
 input[type="checkbox"] {
   display: none;
   opacity: 0;

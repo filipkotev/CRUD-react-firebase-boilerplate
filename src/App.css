@@ -6,3 +6,31 @@
 .centered {
   margin: 8px auto;
 }
+
+nav {
+  background-color: rgb(19, 43, 16);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  height: 36px;
+  padding: 8px 24px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+}
+
+.navigation--links {
+  display: flex;
+}
+
+.navigation--links a {
+  border-right: 1px solid lightgray;
+}
+
+.navigation--links a:last-child {
+  border-right: none;
+  padding-right: 0;
+}
